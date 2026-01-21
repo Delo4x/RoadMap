@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Plus, TrendingUp, Trash2, Edit, Calendar, LogOut } from 'lucide-react'
+import { Plus, TrendingUp, Trash2, Calendar, LogOut } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { getStrategies, deleteStrategy, type SavedStrategy } from '../services/api'

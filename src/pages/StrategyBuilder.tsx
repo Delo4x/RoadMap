@@ -6,7 +6,7 @@ import Step1Strategy from './Step1Strategy'
 import Step2TradingStyle from './Step2TradingStyle'
 import Step3Roadmap from './Step3Roadmap'
 import Step4Checklist from './Step4Checklist'
-import { saveStrategy, getStrategy, updateStrategy, type SavedStrategy } from '../services/api'
+import { saveStrategy, getStrategy, updateStrategy } from '../services/api'
 import type { StrategyData } from '../types'
 
 export default function StrategyBuilder() {
