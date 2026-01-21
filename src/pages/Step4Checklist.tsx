@@ -1,10 +1,12 @@
 import { useState, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Check, RotateCcw, Target, TrendingUp } from 'lucide-react'
 import type { RoadmapStep, TradingStyle } from '../types'
 
 interface Step4ChecklistProps {
   roadmap: RoadmapStep[]
   tradingStyle: TradingStyle | null
+  strategyName?: string
   onBack: () => void
   onSave?: () => void
 }
@@ -13,7 +15,8 @@ interface ChecklistItem extends RoadmapStep {
   checked: boolean
 }
 
-export default function Step4Checklist({ roadmap, tradingStyle, onBack, onSave }: Step4ChecklistProps) {
+export default function Step4Checklist({ roadmap, tradingStyle, strategyName, onBack, onSave }: Step4ChecklistProps) {
+  const navigate = useNavigate()
   const [items, setItems] = useState<ChecklistItem[]>(
     roadmap.map(step => ({ ...step, checked: false }))
   )
@@ -78,11 +81,14 @@ export default function Step4Checklist({ roadmap, tradingStyle, onBack, onSave }
                 <TrendingUp className="w-6 h-6 text-dark-900" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-white">CANDLES RANGE THEORY</h2>
+                <h2 className="text-2xl font-bold text-white">{strategyName || 'Untitled Strategy'}</h2>
                 <p className="text-gray-400">{getTradingStyleName()}</p>
               </div>
             </div>
-            <button className="px-4 py-2 bg-dark-700 border border-gray-600 rounded-lg text-white hover:bg-dark-600 transition-all">
+            <button 
+              onClick={() => navigate('/builder')}
+              className="px-4 py-2 bg-dark-700 border border-gray-600 rounded-lg text-white hover:bg-dark-600 transition-all"
+            >
               New Strategy
             </button>
           </div>
@@ -166,15 +172,10 @@ export default function Step4Checklist({ roadmap, tradingStyle, onBack, onSave }
             </div>
           </div>
 
-          {/* Execute Button */}
+          {/* Save Button */}
           <button
             onClick={() => onSave?.()}
-            disabled={!entryReady}
-            className={`w-full py-4 rounded-xl font-semibold text-white transition-all flex items-center justify-center gap-2 ${
-              entryReady
-                ? 'bg-teal-500 hover:bg-teal-600 shadow-lg shadow-teal-500/50'
-                : 'bg-gray-700 text-gray-500 cursor-not-allowed'
-            }`}
+            className="w-full py-4 rounded-xl font-semibold text-white transition-all flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 shadow-lg shadow-teal-500/50"
           >
             <Target className="w-5 h-5" />
             {onSave ? 'Save & Return to Dashboard' : 'Execute Trade'}

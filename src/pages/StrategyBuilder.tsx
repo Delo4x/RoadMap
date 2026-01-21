@@ -75,20 +75,26 @@ export default function StrategyBuilder() {
   }
 
   const handleSave = async () => {
-    if (!user) return
+    if (!user) {
+      console.error('User not logged in')
+      return
+    }
     
     setIsSaving(true)
     try {
       if (savedStrategyId) {
         await updateStrategy(user.id, savedStrategyId, strategyData)
       } else {
-        const saved = await saveStrategy(user.id, strategyData, strategyData.refinedName)
+        const strategyName = strategyData.refinedName || strategyData.originalDescription.split('\n')[0] || 'Untitled Strategy'
+        const saved = await saveStrategy(user.id, strategyData, strategyName)
         setSavedStrategyId(saved.id)
       }
     } catch (error) {
       console.error('Save failed:', error)
+      alert('Failed to save strategy. Please try again.')
+    } finally {
+      setIsSaving(false)
     }
-    setIsSaving(false)
   }
 
   const nextStep = () => {
@@ -164,9 +170,10 @@ export default function StrategyBuilder() {
           <Step4Checklist
             roadmap={strategyData.roadmap}
             tradingStyle={strategyData.tradingStyle}
+            strategyName={strategyData.refinedName || strategyData.originalDescription.split('\n')[0] || 'Untitled Strategy'}
             onBack={prevStep}
-            onSave={() => {
-              handleSave()
+            onSave={async () => {
+              await handleSave()
               navigate('/dashboard')
             }}
           />
